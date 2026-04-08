@@ -7,6 +7,9 @@
   "deploy": {
     "startCommand": "npm start",
     "restartPolicyType": "ON_FAILURE",
-    "restartPolicyMaxRetries": 3
+    "restartPolicyMaxRetries": 3,
+    "healthcheckPath": "/",
+    "healthcheckInterval": 10,
+    "healthcheckTimeout": 5
   }
 }

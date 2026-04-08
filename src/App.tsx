@@ -46,18 +46,44 @@ export default function App() {
     setInput('')
     setLoading(true)
 
-    // Simulate API response
-    setTimeout(() => {
-      const assistantMessage: Message = {
+    try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: input,
+          model: selectedModel,
+        }),
+      })
+
+      if (res.ok) {
+        const data = await res.json()
+        const assistantMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          role: 'assistant',
+          content: data.response,
+          model: selectedModel,
+          timestamp: new Date(),
+        }
+        setMessages((prev) => [...prev, assistantMessage])
+      } else {
+        setMessages((prev) => [...prev, {
+          id: (Date.now() + 1).toString(),
+          role: 'assistant',
+          content: 'Error connecting to API',
+          timestamp: new Date(),
+        }])
+      }
+    } catch (err) {
+      setMessages((prev) => [...prev, {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: `[${currentModel?.name}] I received your message: "${userMessage.content}"\n\nIntegration coming next!`,
-        model: selectedModel,
+        content: `Error: ${err.message}`,
         timestamp: new Date(),
-      }
-      setMessages((prev) => [...prev, assistantMessage])
+      }])
+    } finally {
       setLoading(false)
-    }, 1000)
+    }
   }
 
   const currentModel = MODELS.find(m => m.id === selectedModel)
