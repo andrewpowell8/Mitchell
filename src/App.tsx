@@ -1,12 +1,13 @@
 import { useState, useRef, useEffect } from 'react'
-import { Send, Settings2, Calendar, FileText, Image, Zap, MessageCircle } from 'lucide-react'
+import { Send, Settings2, Calendar, FileText, Image, Zap, MessageCircle, ShoppingCart } from 'lucide-react'
 import ChatPage from './pages/ChatPage'
-import Calendar from './pages/Calendar'
+import CalendarPage from './pages/Calendar'
 import Memory from './pages/Memory'
 import Images from './pages/Images'
 import SubAgents from './pages/SubAgents'
+import Orders from './pages/Orders'
 
-type Page = 'chat' | 'calendar' | 'memory' | 'images' | 'agents'
+type Page = 'chat' | 'calendar' | 'memory' | 'images' | 'agents' | 'orders'
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState<Page>('chat')
@@ -14,6 +15,7 @@ export default function App() {
 
   const navItems = [
     { id: 'chat' as Page, label: 'Chat', icon: MessageCircle },
+    { id: 'orders' as Page, label: 'Orders', icon: ShoppingCart },
     { id: 'calendar' as Page, label: 'Calendar', icon: Calendar },
     { id: 'memory' as Page, label: 'Memory', icon: FileText },
     { id: 'images' as Page, label: 'Images', icon: Image },
@@ -24,8 +26,10 @@ export default function App() {
     switch (currentPage) {
       case 'chat':
         return <ChatPage />
+      case 'orders':
+        return <Orders />
       case 'calendar':
-        return <Calendar />
+        return <CalendarPage />
       case 'memory':
         return <Memory />
       case 'images':
