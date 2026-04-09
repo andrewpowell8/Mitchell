@@ -72,12 +72,16 @@ app.post('/api/conversation/clear', (req, res) => {
 })
 
 // Serve static files
-const distPath = path.join(__dirname, 'dist/public')
+const distPath = path.join(__dirname, 'dist')
 app.use('/', express.static(distPath))
 
-// SPA fallback
+// SPA fallback - serve index.html for all routes
 app.get('*', (req, res) => {
-  res.sendFile(path.join(distPath, 'index.html'))
+  res.sendFile(path.join(distPath, 'index.html'), (err) => {
+    if (err) {
+      res.status(404).json({ error: 'Not found' })
+    }
+  })
 })
 
 const PORT = process.env.PORT || 5173
