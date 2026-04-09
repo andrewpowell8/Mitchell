@@ -1,6 +1,5 @@
 import express from 'express'
 import cors from 'cors'
-import { createServer as createViteServer } from 'vite'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
@@ -72,21 +71,16 @@ app.post('/api/conversation/clear', (req, res) => {
   res.json({ cleared: true })
 })
 
-// Serve Vite in dev
-const vite = await createViteServer({
-  server: { middlewareMode: true },
-  appType: 'spa',
-})
-
-app.use(vite.middlewares)
-app.use('/', express.static(path.join(__dirname, 'dist')))
+// Serve static files
+const distPath = path.join(__dirname, 'dist/public')
+app.use('/', express.static(distPath))
 
 // SPA fallback
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'))
+  res.sendFile(path.join(distPath, 'index.html'))
 })
 
 const PORT = process.env.PORT || 5173
-app.listen(PORT, () => {
-  console.log(`Mission Control running on http://localhost:${PORT}`)
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Mission Control running on port ${PORT}`)
 })

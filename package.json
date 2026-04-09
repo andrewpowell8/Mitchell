@@ -6,7 +6,7 @@
     "dev": "node server.mjs",
     "build": "vite build",
     "preview": "vite preview",
-    "start": "node server.mjs"
+    "start": "NODE_ENV=production node server.mjs"
   },
   "dependencies": {
     "react": "^18.3.1",
